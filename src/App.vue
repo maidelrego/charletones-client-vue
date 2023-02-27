@@ -1,21 +1,25 @@
 <script setup lang="ts">
-  import { RouterView } from 'vue-router'
-  import ToolBar from '@/shared/components/ToolBar.vue'
+import { RouterView } from 'vue-router'
+// import ToolBar from '@/shared/components/ToolBar.vue'
+import SideBar from '@/shared/components/SideBar.vue'
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <ToolBar />
+  <div class="grid">
+    <div class="col-fixed" style="width:80px">
+      <SideBar />
     </div>
-  </header>
-
-  <RouterView />
+    <div class="col mainView">
+      <RouterView />
+    </div>
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+.mainView {
+  background-color: #e3f2fd;
+  overflow: auto;
+  margin: 10px;
+  border-radius: 10px;
 }
 </style>

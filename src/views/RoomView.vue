@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Home Page</h1>
+    <h1>Room Page</h1>
   </div>
 </template>
 
@@ -8,6 +8,4 @@
 
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
