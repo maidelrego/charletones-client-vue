@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar-icon group">
-    <RouterLink :to="props.to">
+    <RouterLink :to="props.to" active-class="sidebar-icon:hover icon:hover">
       <font-awesome-icon :icon="props.icon" class="icon" />
       <span class="sidebar-tooltip">{{ tootltip }}</span>
     </RouterLink>
@@ -9,7 +9,6 @@
 
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
-
 const props = defineProps<{
   icon: string;
   to: string;
@@ -19,6 +18,9 @@ const props = defineProps<{
 </script>
 
 <style scoped>
+.link-active {
+  background-color: #e3f2fd;
+}
 .sidebar-icon {
   display: flex;
   justify-content: center;
