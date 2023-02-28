@@ -1,6 +1,6 @@
 <template>
     <div class="mainBar">
-      <SideBarIcon icon="home" to='/' tootltip="Home" />
+      <SideBarIcon icon="home" to='/dashboard' tootltip="Dashboard" />
       <SideBarIcon icon="plus" to='/create' tootltip="Insert Stat" />
       <SideBarIcon icon="dice" to='/room' tootltip="Room" />
       <SideBarIcon icon="gear" to='/settings' tootltip="Settings" />
