@@ -1,4 +1,4 @@
-import { doAPIGet, doAPIPost } from '@/utils/api';
+import { doAPIGet, doAPIPost } from '@/services/api';
 import { defineStore } from 'pinia'
 
 interface AuthState {

@@ -15,25 +15,25 @@ const router = createRouter({
           path: '/dashboard',
           name: 'dashboard',
           meta: { requiresAuth: true },
-          component: () => import('@/views/HomeView.vue')
+          component: () => import('@/pages/DashboardPage.vue')
         },
         {
           path: '/create',
           name: 'create',
           meta: { requiresAuth: true },
-          component: () => import('@/views/CreateView.vue')
+          component: () => import('@/pages/CreatePage.vue')
         },
         {
           path: '/room',
           name: 'room',
           meta: { requiresAuth: true },
-          component: () => import('@/views/RoomView.vue')
+          component: () => import('@/pages/RoomPage.vue')
         },
         {
           path: '/settings',
           name: 'setings',
           meta: { requiresAuth: true },
-          component: () => import('@/views/SettingsView.vue')
+          component: () => import('@/pages/SettingsPage.vue')
         }
       ]
     },

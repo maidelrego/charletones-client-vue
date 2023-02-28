@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-  import { connectToServer } from '@/utils/socket-client'
+  import { connectToServer } from '@/services/socket-client'
   import { useSocketStore } from "@/stores/socket"
   import { storeToRefs } from 'pinia';
   import { onMounted } from 'vue';
