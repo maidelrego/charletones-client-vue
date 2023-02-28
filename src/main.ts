@@ -9,11 +9,11 @@ import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faDice, faHome, faGear, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faDice, faHome, faGear, faPlus, faTrophy, faCircleNotch } from '@fortawesome/free-solid-svg-icons'
 
 const app = createApp(App)
 const pinia = createPinia()
-library.add(faDice, faHome, faGear, faPlus)
+library.add(faDice, faHome, faGear, faPlus, faTrophy, faCircleNotch)
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.use(pinia)
 
@@ -23,6 +23,6 @@ pinia.use(({ store }) => {
 
 
 app.use(router)
-app.use(PrimeVue)
+app.use(PrimeVue, {ripple: true})
 
 app.mount('#app')

@@ -14,14 +14,6 @@ interface ITopts {
   headers?: any
 }
 
-interface ITpath {
-  path: string
-}
-
-interface ITparams {
-  params: any | null
-}
-
 const timeoutWatcher = (promise: Promise<any>, options?: IOptions) => {
   const ms = options ? options.ms : 90000
   const msg = options ? options.msg : 'The API request has timed out.'
@@ -100,11 +92,11 @@ function doAPIPost(path: string, params: any) {
     })
 }
 
-function doAPIPut(path: ITpath, params: ITparams) {
-  if (path.path[0] === '/') {
-    path.path = path.path.slice(1)
+function doAPIPut(path: string, params: any) {
+  if (path[0] === '/') {
+    path = path.slice(1)
   }
-  const url = apiServer + path.path
+  const url = apiServer + path
   const apicall = axiosInstance.put(url, params, addAuthHeader({ clear: false }))
   return timeoutWatcher(apicall)
     .then((data) => {
@@ -115,11 +107,11 @@ function doAPIPut(path: ITpath, params: ITparams) {
     })
 }
 
-function doAPIDelete(path: ITpath) {
-  if (path.path[0] === '/') {
-    path.path = path.path.slice(1)
+function doAPIDelete(path: string) {
+  if (path[0] === '/') {
+    path = path.slice(1)
   }
-  const url = apiServer + path.path
+  const url = apiServer + path
   const apicall = axiosInstance.delete(url, addAuthHeader({ clear: false }))
   return timeoutWatcher(apicall)
     .then((data) => {
