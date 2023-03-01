@@ -42,7 +42,8 @@ const router = createRouter({
       name: 'login',
       component: () => import('@/auth/components/LoginPage.vue')
     }
-  ]
+  ],
+  linkActiveClass: 'active',
 })
 
 export default router

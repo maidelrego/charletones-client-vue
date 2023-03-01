@@ -27,8 +27,6 @@
               <span class="numbers">50</span>
             </div>
           </div>
-
-          
         </div>
       </template>
     </Card>
@@ -46,7 +44,6 @@ const props = defineProps<{
 }>()
 
 const { user } = toRefs(props)
-
 </script>
 
 <style scoped>

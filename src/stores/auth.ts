@@ -1,16 +1,19 @@
 import { doAPIGet, doAPIPost } from '@/services/api';
 import { defineStore } from 'pinia'
+import type { User } from '@/interfaces/User';
 
 interface AuthState {
   loggedIn: boolean,
   token: string,
-  user: string[]
+  _id: string,
+  user: User[]
 }
 
 export const useAuthStore = defineStore('authStore', {
   state: () => ({
     loggedIn: false,
     token: '',
+    _id: '',
     user: []
   } as AuthState ),
 
@@ -27,6 +30,7 @@ export const useAuthStore = defineStore('authStore', {
         } else {
           this.loggedIn = true;
           this.token = checkAuthUser.token;
+          this._id = checkAuthUser._id;
         }
       }
     },

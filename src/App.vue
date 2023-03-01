@@ -11,17 +11,24 @@ import { RouterView } from 'vue-router'
 
 <style>
 @import url('https://fonts.cdnfonts.com/css/cubano');
-.main {
-  background: rgb(31,40,52);
-  background: linear-gradient(0deg, rgba(31,40,52,1) 66%, rgba(18,24,27,1) 100%);
-  margin: 0;
-  padding: 0;
-  height: 98.3vh;
+
+body {
+  background-color: #1f2834;
+  height: 99vh;
 }
+
 h1 {
-  color: #fff;
+  background-image: linear-gradient(to top, var(--tw-gradient-stops));
+  --tw-gradient-from: #f97316;
+  --tw-gradient-to: rgb(249 115 22 / 0);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  --tw-gradient-to: #eab308;
+  background-clip: text;
+  color: #0000;
+  -webkit-background-clip: text;
   font-family: 'Cubano', sans-serif;
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 400;
+
 }
 </style>

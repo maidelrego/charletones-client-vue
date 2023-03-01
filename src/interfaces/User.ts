@@ -1,3 +1,5 @@
+import type { Stats } from "./Stats"
+
 export interface User {
   _id: string,
   email: string,
@@ -6,5 +8,6 @@ export interface User {
   updatedAt: string,
   createdAt: string
   cloudinary_id: string,
-  avatar: string
+  avatar: string,
+  stats: Stats[]
 }
