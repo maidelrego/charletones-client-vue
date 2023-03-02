@@ -4,14 +4,14 @@
       <NavBar />
     </div>
     <div class="col-12 md:col-4 lg:col-4 text-center">
-      <Dropdown class="mt-2" style="background-color: transparent; min-width: 230px;" v-model="selectedCity"
-        :options="cities" optionLabel="name" option-value="id" placeholder="Game Mode">
+      <Dropdown class="mt-2" style="background-color: transparent; min-width: 230px;" v-model="selectedGameMode"
+        :options="modeList" optionLabel="name" option-value="_id" placeholder="Game Mode" @change="gameMode.setSlug">
         <template #value="slotProps">
           <div class="mySelectStyles" v-if="!slotProps.value">
             <span>{{ slotProps.placeholder }}</span>
           </div>
           <div v-else>
-            <span class="mySelectStyles">{{ cities.filter(i => i.id === slotProps.value)[0].name }}</span>
+            <span class="mySelectStyles">{{ modeList.filter(i => i._id === slotProps.value)[0].name }}</span>
           </div>
         </template>
         <template #option="slotProps">
@@ -31,20 +31,16 @@
 import Dropdown from 'primevue/dropdown';
 import NavBar from './NavBar.vue';
 import Avatar from 'primevue/avatar';
-import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
+import { useGameModeStore } from '@/stores/gameMode';
 
-const authStore = useAuthStore();
+const authStore = useAuthStore()
 const { user } = storeToRefs(authStore)
+const gameMode = useGameModeStore()
+const { selectedGameMode, modeList } = storeToRefs(gameMode)
 
-const selectedCity = ref(null);
 
-const cities = [
-  { name: 'Dominoes', id: 1 },
-  { name: 'COD', id: 2 },
-  { name: 'Apex Legends', id: 3 }
-];
 </script>
 
 <style scoped>

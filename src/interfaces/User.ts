@@ -9,5 +9,5 @@ export interface User {
   createdAt: string
   cloudinary_id: string,
   avatar: string,
-  stats: Stats[]
+  stats?: Stats[]
 }

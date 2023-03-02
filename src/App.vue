@@ -15,6 +15,7 @@ import { RouterView } from 'vue-router'
 body {
   background-color: #1f2834;
   height: 99vh;
+  margin: 20px;
 }
 
 h1 {
@@ -30,5 +31,13 @@ h1 {
   font-size: 2rem;
   font-weight: 400;
 
+}
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #3f454f;
 }
 </style>

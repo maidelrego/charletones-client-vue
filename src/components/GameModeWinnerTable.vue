@@ -1,45 +1,24 @@
 <template>
   <div>
-    <Card class="shadow-5 cardBackground border-round-50">
+    <Card class="shadow-5 winnersTableCard border-round-50">
       <template #header>
         <div class="cardHeader">
           <span class="tableHeader">Dominoes Winners</span>
         </div>
       </template>
       <template #content>
-        <div class="content">
-          <!-- <DataTable :value="props.statsData" :paginator="true" :rows="10" :paginatorTemplate="{
-            '640px': 'PrevPageLink CurrentPageReport NextPageLink',
-            '960px': 'FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink',
-            '1300px': 'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink',
-            default: 'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink JumpToPageDropdown'
-          }" responsiveLayout="scroll" currentPageReportTemplate="Showing {first} to {last} of {totalRecords}" class="p-datatable-sm myTable">
-            <Column field="createdAt" header="Date">
-              <template #body="slotProps">
-                <span>{{ new Date(slotProps.data.createdAt).toDateString() }}</span>
-              </template>
-            </Column>
-            <Column field="user.fullName" header="Player"></Column>
-            <template #paginatorstart>
-                <Button type="button" icon="pi pi-refresh" class="p-button-text" />
+        <div class="scroll">
+          <Timeline :value="props.statsData">
+            <template #marker>
+              <font-awesome-icon icon="circle-dot" style="margin-top: 5px; color: #2196f3;"/>
             </template>
-            <template #paginatorend>
-                <Button type="button" icon="pi pi-cloud" class="p-button-text" />
+            <template #opposite="slotProps">
+              <span class="spanText">{{ moment(slotProps.item.createdAt).format('MM-DD-YYYY hh:mm a') }}</span>
             </template>
-          </DataTable> -->
-          <DataTable
-            :value="props.statsData"
-            :paginator="true"
-            :rows="10"
-            class="p-datatable-sm"
-            :paginatorTemplate="{
-                default: ' PrevPageLink PageLinks NextPageLink'
-            }"
-            responsiveLayout="scroll"
-        >
-            <Column field="createdAt" header="Date"></Column>
-            <Column field="user.fullName" header="Name"></Column>
-        </DataTable>
+            <template #content="slotProps">
+              <span class="spanText">{{ slotProps.item.user.fullName }}</span>
+            </template>
+          </Timeline>
         </div>
       </template>
     </Card>
@@ -48,23 +27,31 @@
 
 <script setup lang="ts">
 import Card from 'primevue/card'
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
 import type { Stats } from '../interfaces/Stats';
+import Timeline from 'primevue/timeline';
+import moment from 'moment';
 
 const props = defineProps<{
   statsData: Stats[]
 }>()
 
+
 </script>
 
 <style scoped>
+.spanText {
+  font-size: 1rem;
+  color: white;
+  font-family: sophia, sans-serif;
+  font-weight: 400;
+}
+
 .cardHeader {
   background-color: #eab308;
   text-align: center;
 }
 
-.cardBackground {
+.winnersTableCard {
   background-color: #2a2e35;
 }
 
@@ -85,5 +72,10 @@ const props = defineProps<{
   color: #1f2834;
   display: inline-block;
   font-family: 'Cubano', sans-serif;
+}
+div.scroll {
+  height: 500px;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 </style>

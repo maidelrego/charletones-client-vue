@@ -3,8 +3,9 @@
     <Card class="shadow-5 cardBackground border-round-md">
       <template #header>
         <div class="cardHeader">
-          <Avatar class="mt-3" :image="user.avatar" shape="circle" style="height: 130px; width: 130px;" />
-          <h1 class="mt-0 mb-0">{{ user.fullName }}</h1>
+          <Avatar class="iconCorner" :image="renderIcon" size="large" />
+          <Avatar class="mt-3" :image="playerStat.user.avatar" shape="circle" style="height: 130px; width: 130px;" />
+          <h1 class="mt-0 mb-0">{{ playerStat.user.fullName }}</h1>
         </div>
       </template>
       <template #content>
@@ -16,7 +17,7 @@
                   <font-awesome-icon icon="trophy" class="icon" />
                 </span>
               </Avatar>
-              <span class="numbers">50</span>
+              <span class="numbers">{{ playerStat.totalWin }}</span>
             </div>
             <div class="col">
               <Avatar size="large" style="background-color:#2196F3; color: #ffffff">
@@ -24,7 +25,7 @@
                   <font-awesome-icon icon="circle-notch" class="icon" />
                 </span>
               </Avatar>
-              <span class="numbers">50</span>
+              <span class="numbers">{{ playerStat.totalLose }}</span>
             </div>
           </div>
         </div>
@@ -36,14 +37,41 @@
 <script setup lang="ts">
 import Card from 'primevue/card'
 import Avatar from 'primevue/avatar';
-import type { User } from '@/interfaces/User';
-import { toRefs } from 'vue';
+import { toRefs, computed } from 'vue';
+import type { PlayerStat } from '../interfaces/Stats';
+import firstPlace from '@/assets/images/firstPlace.png'
+import secondPlace from '@/assets/images/secondPlace.png'
+import thirdPlace from '@/assets/images/thirdPlace.png'
+import shit from '@/assets/images/shit.png'
 
 const props = defineProps<{
-  user: User
+  playerStat: PlayerStat,
+  index: number
 }>()
 
-const { user } = toRefs(props)
+const renderIcon = computed(() => {
+  let icon = '';
+  switch (props.index) {
+    case 0:
+      icon = firstPlace;
+      break;
+    case 1:
+      icon = secondPlace;
+      break;
+    case 2:
+      icon = thirdPlace;
+      break;
+    case 3:
+      icon = shit
+      break;
+    default:
+      icon = ''
+      break;
+  }
+  return icon
+})
+
+const { playerStat } = toRefs(props)
 </script>
 
 <style scoped>
@@ -71,7 +99,17 @@ const { user } = toRefs(props)
   font-family: sofia-pro, sans-serif;
 }
 
+.iconCorner {
+  position: absolute;
+  top: -1rem;
+  left: -1.25rem;
+  height: 40px;
+  width: 50px;
+  z-index: 1;
+}
+
 .cardBackground {
+  position: relative;
   background-color: #2a2e35;
 }
 </style>
