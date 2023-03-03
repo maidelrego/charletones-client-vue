@@ -5,14 +5,10 @@
     </div>
   </div>
   <div class="grid">
-    <div class="col-12 md:col-6 lg:col-4">
-      <GameModeWinnerTable :stats-data="winnersData" />
+    <div class="col-12 md:col-12 lg:col-6">
+      <TimeLine v-if="playerStats.length > 0" :stats-data="timeLineData" />
     </div>
-    <div class="col-12 md:col-6 lg:col-4">
-      <!-- <GameModeWinnerTable /> -->
-    </div>
-    <div class="col-12 md:col-6 lg:col-4">
-      <!-- <GameModeWinnerTable /> -->
+    <div class="col-12 md:col-12 lg:col-6">
     </div>
   </div>
 </template>
@@ -23,11 +19,11 @@ import { useGameModeStore } from "@/stores/gameMode";
 import { onBeforeMount, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import UserCard from "@/components/UserCard.vue";
-import GameModeWinnerTable from "@/components/GameModeWinnerTable.vue";
+import TimeLine from "@/components/TimelineComp.vue";
 
 const statsStore = useStatsStore();
 const gameModeStore = useGameModeStore();
-const winnersData = computed(() => statsStore.stats.filter((stat) => stat.win));
+const timeLineData = computed(() => { return statsStore.timeLine });
 const { playerStats } = storeToRefs(statsStore)
 
 

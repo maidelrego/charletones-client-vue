@@ -101,9 +101,9 @@ const { playerStat } = toRefs(props)
 
 .iconCorner {
   position: absolute;
-  top: -1rem;
+  top: -1.25rem;
   left: -1.25rem;
-  height: 40px;
+  height: 50px;
   width: 50px;
   z-index: 1;
 }

@@ -8,14 +8,17 @@ const gameMode = useGameModeStore()
 
 interface StatsState {
   stats: Stats[],
-  playerStats: PlayerStat[]
+  playerStats: PlayerStat[],
+  timeLine: any
 }
+
 
 export const useStatsStore = defineStore('statsStore', {
   state: () =>
     ({
       stats: [],
-      playerStats: []
+      playerStats: [],
+      timeLine: []
     } as StatsState),
   getters: {
     getWinners: (state) => state.stats.filter((stat) => stat.win)
@@ -25,6 +28,7 @@ export const useStatsStore = defineStore('statsStore', {
       if (!gameMode.selectedGameMode) return
       try {
         const stats = await doAPIGet('games/by-mode/' + gameMode.selectedGameMode)
+        const timeLine = await doAPIGet('games/by-date/' + gameMode.selectedGameMode)
         console.log('STATS', stats)
         const playerStats = countPlayerShooterStats(stats, gameMode.slug)
         if (gameMode.slug === 'dominoes') {
@@ -38,20 +42,13 @@ export const useStatsStore = defineStore('statsStore', {
             return 0
           })
         }
-        console.log('PLAYER STATS', playerStats)
         this.stats = stats
         this.playerStats = playerStats
+        this.timeLine = timeLine
       } 
       catch (error) {
         console.log('ERRRRORRRR', error)
       }
     },
-    // async loadStatsByPlayer(playerId: string) {
-    //   if (this.stats.length === 0) {
-    //     await this.loadStats()
-    //   }
-    //   const playerStats = this.stats.filter((stat) => stat.user._id === playerId)
-    //   return pla
-    // }
   }
 })

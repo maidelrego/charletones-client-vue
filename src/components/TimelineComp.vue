@@ -3,20 +3,34 @@
     <Card class="shadow-5 winnersTableCard border-round-50">
       <template #header>
         <div class="cardHeader">
-          <span class="tableHeader">Dominoes Winners</span>
+          <span class="tableHeader">Timeline</span>
         </div>
       </template>
       <template #content>
         <div class="scroll">
           <Timeline :value="props.statsData">
             <template #marker>
-              <font-awesome-icon icon="circle-dot" style="margin-top: 5px; color: #2196f3;"/>
+              <font-awesome-icon icon="circle-dot" style="margin-top: 5px; color: #2196f3;" />
             </template>
             <template #opposite="slotProps">
-              <span class="spanText">{{ moment(slotProps.item.createdAt).format('MM-DD-YYYY hh:mm a') }}</span>
+              <span class="spanText">{{ slotProps.item.date }}</span>
             </template>
             <template #content="slotProps">
-              <span class="spanText">{{ slotProps.item.user.fullName }}</span>
+              <div>
+                <h4 class="mt-1 mb-2 spanText">Wins</h4>
+                <AvatarGroup class="mb-3">
+                  <Avatar v-for="player in slotProps.item.wins" :key="player._id" :image="player.user.avatar"
+                    shape="circle" />
+                </AvatarGroup>
+                <template v-if="slotProps.item.losses.length > 0">
+                  <h4 class="mt-1 mb-2 spanText">Donuts</h4>
+                  <AvatarGroup class="mb-3">
+                    <Avatar v-for="player in slotProps.item.losses" :key="player._id" :image="player.user.avatar"
+                      shape="circle" />
+                  </AvatarGroup>
+                </template>
+              </div>
+
             </template>
           </Timeline>
         </div>
@@ -29,7 +43,9 @@
 import Card from 'primevue/card'
 import type { Stats } from '../interfaces/Stats';
 import Timeline from 'primevue/timeline';
-import moment from 'moment';
+import AvatarGroup from 'primevue/avatargroup';
+import Avatar from 'primevue/avatar';
+
 
 const props = defineProps<{
   statsData: Stats[]
@@ -73,8 +89,9 @@ const props = defineProps<{
   display: inline-block;
   font-family: 'Cubano', sans-serif;
 }
+
 div.scroll {
-  height: 500px;
+  height: 438px;
   overflow-x: hidden;
   overflow-y: auto;
 }
