@@ -11,32 +11,58 @@ import * as _ from 'lodash'
 //   return maxValueObject;
 // };
 
-// export const seasonPartitions = (numbers, slug = "dominoes") => {
-//   let seasons = [];
-//   const size = partitionSize * 4; // number of games per 4 rows on data for each player
-//   let seasonSize = size;
-//   let partitions = [];
+// export const getMaxWinner = (data: PlayerStat[]) => {
+//   const maxWinObject = data.reduce((max, current) => {
+//     return current.totalWin > max.totalWin ? current : max
+//   })
 
-//   for (let i = 0; i < numbers.length; i += seasonSize) {
-//     partitions.push(numbers.slice(i, i + seasonSize));
-//   }
+//   return maxWinObject
+// }
 
-//   partitions.forEach((partition, index) => {
-//     const seasonStat = countPlayerShooterStats(partition, slug);
-//     const season = {
-//       seasonName: `Season ${index + 1}`,
-//       seasonStats: seasonStat,
-//       winner: getBiggerValue(seasonStat, "totalWin"),
-//       loser: getBiggerValue(seasonStat, "totalLose"),
-//       remainingGames: (seasonSize - partition.length) / 4,
-//     };
-//     seasons.push(season);
-//   });
+// export const getMaxLoser = (data: PlayerStat[]) => {
+//   const maxLoserObject = data.reduce((max, current) => {
+//     return max.totalLose > current.totalLose ? max : current
+//   })
 
-//   return seasons;
-// };
+//   return maxLoserObject
+// }
 
+export const sortByWins = (data: PlayerStat[]) => {
+  return data.sort((a, b) => {
+    if (a.totalWin > b.totalWin) return -1
+    if (a.totalWin < b.totalWin) return 1
+    if (a.totalWin === b.totalWin) {
+      if (a.totalLose > b.totalLose) return 1
+      if (a.totalLose < b.totalLose) return -1
+    }
+    return 0
+  })
+}
 
+export const seasonPartitions = (numbers: Stats[], slug = 'dominoes') => {
+  numbers.reverse() // reverse the array to get the last games last
+  const seasons = <any>[]
+  const size = 50 * 4 // number of games per 4 rows on data for each player
+  const seasonSize = size
+  const partitions = []
+
+  for (let i = 0; i < numbers.length; i += seasonSize) {
+    partitions.push(numbers.slice(i, i + seasonSize))
+  }
+
+  partitions.forEach((partition, index) => {
+    const seasonStat = countPlayerShooterStats(<Stats[]>partition, <string | undefined>slug)
+    const sortedSeasonStat = sortByWins(seasonStat)
+    const season = {
+      seasonName: `Season ${index + 1}`,
+      seasonStats: sortedSeasonStat,
+      remainingGames: (seasonSize - partition.length) / 4
+    }
+    seasons.push(season)
+  })
+
+  return seasons
+}
 
 export const tableAugmentData = (data: Stats[]) => {
   data = data.map((row) => {
@@ -105,21 +131,13 @@ export const countPlayerShooterStats = (data: Stats[], slug: string | undefined)
       playerStat.gotNothing += !stat.win && !stat.argoya ? 1 : 0
     })
 
-    playerStat.gotNothingPercentege = getGotNothingPercentege(
-      playerStat.gotNothing,
-      value.length
-    )
+    playerStat.gotNothingPercentege = getGotNothingPercentege(playerStat.gotNothing, value.length)
 
     playerStat.ratio = getRatio(playerStat, slug)
 
     playerStat.winPercentage = getWinPercentage(playerStat.totalWin, value.length)
 
     playerStat.lostPercentege = getLostPercentege(playerStat.totalLose, value.length)
-
-    // if (slug !== 'dominoes') {
-    //   delete playerStat.gotNothing
-    //   delete playerStat.gotNothingPercentege
-    // }
 
     statsData.push(playerStat)
   }

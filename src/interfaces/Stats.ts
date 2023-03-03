@@ -23,6 +23,16 @@ export interface PlayerStat {
   winPercentage: number
   lostPercentege: number
   gotNothing: number
-  gotNothingPercentege: number
+  gotNothingPercentege: number,
+  mostWinsInADay: number | null,
+  mostLosesInADay: number | null,
   user: User
+}
+
+export interface SeasonStats {
+  loser: User,
+  winner: User,
+  seasonName: string,
+  remainingGames: number,
+  seasonStats: Stats[],
 }

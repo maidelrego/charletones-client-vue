@@ -6,10 +6,29 @@
           <Avatar class="iconCorner" :image="renderIcon" size="large" />
           <Avatar class="mt-3" :image="playerStat.user.avatar" shape="circle" style="height: 130px; width: 130px;" />
           <h1 class="mt-0 mb-0">{{ playerStat.user.fullName }}</h1>
+          <div v-if="playerStat.mostWinsInADay" class="mentionSection mt-3">
+            
+            <span class="mentions">💯 Most Wins in a Day ( {{ playerStat.mostWinsInADay }} )</span>
+          </div>
+          <div v-if="playerStat.mostLosesInADay" class="mentionSection mt-3">
+            <span class="mentions">🤣 Most Donuts in a Day ( {{ playerStat.mostLosesInADay }} )</span>
+          </div>
+          <div v-if="!playerStat.mostLosesInADay && !playerStat.mostWinsInADay" class="mentionSection mt-3">
+            <span class="mentions">🤷 Look mom! Im just hating ( {{ playerStat.gotNothing }} )</span>
+          </div>
         </div>
       </template>
       <template #content>
-        <div class="cardContent mt-0">
+        <div class="mt-0 pt-0 pl-2">
+          <div class="mb-4">
+           
+            <!-- <ul class="mentionsList">
+              <li>
+                <span>Most Wins in a Day: </span>
+                <span>{{ playerStat.mostWinsInADay }}</span>
+              </li>
+            </ul> -->
+          </div>
           <div class="grid  text-center">
             <div class="col">
               <Avatar size="large" style="background-color:#2196F3; color: #ffffff">
@@ -74,7 +93,10 @@ const renderIcon = computed(() => {
 const { playerStat } = toRefs(props)
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+::v-deep(.p-card-content) {
+  padding: 0;
+}
 .numbers {
   font-size: 2rem;
   font-weight: 200;
@@ -94,11 +116,16 @@ const { playerStat } = toRefs(props)
   padding-bottom: 1rem;
 }
 
-.cardContent {
+.mentions {
   color: #fff;
   font-family: sofia-pro, sans-serif;
+  font-weight: 800;
 }
-
+.mentionSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .iconCorner {
   position: absolute;
   top: -1.25rem;

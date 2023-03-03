@@ -9,6 +9,7 @@
       <TimeLine v-if="playerStats.length > 0" :stats-data="timeLineData" />
     </div>
     <div class="col-12 md:col-12 lg:col-6">
+      <SeasonsFieldset v-if="playerStats.length > 0" :stats-data="seasonStats" />
     </div>
   </div>
 </template>
@@ -20,10 +21,12 @@ import { onBeforeMount, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import UserCard from "@/components/UserCard.vue";
 import TimeLine from "@/components/TimelineComp.vue";
+import SeasonsFieldset from "@/components/SeasonsFieldset.vue";
 
 const statsStore = useStatsStore();
 const gameModeStore = useGameModeStore();
 const timeLineData = computed(() => { return statsStore.timeLine });
+const seasonStats = computed(() => { return statsStore.seasonStats });
 const { playerStats } = storeToRefs(statsStore)
 
 
@@ -32,6 +35,7 @@ gameModeStore.$subscribe(() => {
 });
 
 onBeforeMount(async () => {
+  if (gameModeStore.modeList.length) return
   await gameModeStore.loadGameModes();
   gameModeStore.setSelectedDefault();
 })
