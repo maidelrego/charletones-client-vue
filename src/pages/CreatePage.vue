@@ -1,35 +1,36 @@
 <template>
-  <div>
-    <Dialog :content-style="[{ backgroundColor: '#2a2e35' }]" :breakpoints="{ '960px': '75vw', '640px': '100vw' }"
-      :style="{ width: '50vw' }" v-model:visible="display">
-      <template #header>
-        <div class="cardHeader">
-          <span class="tableHeader">Insert Stats</span>
-        </div>
-      </template>
-      <InsertStats />
-    </Dialog>
-  </div>
+  <Dialog :content-style="[{ backgroundColor: '#2a2e35' }]" :breakpoints="{ '960px': '75vw', '640px': '100vw' }"
+    :style="{ width: '50vw' }" v-model:visible="value">
+    <template #header>
+      <div class="cardHeader">
+        <span class="tableHeader">Insert Stats</span>
+      </div>
+    </template>
+    <InsertStats @close-dialog="closeDialog" />
+  </Dialog>
 </template>
 
 <script setup lang="ts">
 import InsertStats from '@/components/InsertStats.vue';
 import Dialog from 'primevue/dialog';
-import { ref, onBeforeMount } from 'vue';
+import { computed } from 'vue';
 
-const display = ref(false);
+const props = defineProps(['modelValue'])
+const emit = defineEmits(['update:modelValue'])
 
-const showDialog = () => {
-  display.value = true;
+const value = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value: boolean) {
+    emit('update:modelValue', value);
+  }
+});
+
+const closeDialog = () => {
+  value.value = false;
 }
 
-const hideDialog = () => {
-  display.value = false;
-}
-
-onBeforeMount(() => {
-  showDialog();
-})
 </script>
 
 <style lang="scss" scoped>

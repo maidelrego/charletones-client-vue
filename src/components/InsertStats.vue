@@ -36,8 +36,10 @@ import Checkbox from 'primevue/checkbox';
 import Button from 'primevue/button';
 import { doAPIPost } from '@/services/api';
 import { useSpinnerStore } from '@/stores/spinner';
+import { useStatsStore } from '../stores/stats';
 
 const spinnerStore = useSpinnerStore();
+const statsStore = useStatsStore();
 
 interface Form {
   kills: number;
@@ -54,6 +56,7 @@ const { users } = storeToRefs(userStore)
 const playerForms = ref<Form[]>([]);
 const selectedWinner = ref<string>();
 const selectedArgoyas = ref<string[]>([]);
+const emit = defineEmits(['closeDialog'])
 
 watchEffect(() => {
   if (selectedWinner.value) {
@@ -82,6 +85,7 @@ const updatePlayerForms = (winner: string, argoyas: string[]) => {
 
 }
 
+
 const submitStats = async () => {
   spinnerStore.setLoadingState(true);
   for (const stat of playerForms.value) {
@@ -89,6 +93,8 @@ const submitStats = async () => {
     await doAPIPost('games', stat)
   }
   spinnerStore.setLoadingState(false);
+  statsStore.loadStats();
+  emit('closeDialog');
 }
 
 onBeforeMount(async () => {

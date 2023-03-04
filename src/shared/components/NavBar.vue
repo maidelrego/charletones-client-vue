@@ -1,20 +1,24 @@
 <template>
   <div class="navBar">
-    <router-link class="links" v-for="link in links" :key="link.name" :to="link.path">
-      {{ link.name }}
-    </router-link>
+    <router-link class="links" to="/dashboard">Dashboard</router-link>
+    <span @click="openCreateDialog()" class="links" :class="dialogVisible">Create</span>
+    <router-link class="links" to="/room">Rooms</router-link>
+    <router-link class="links" to="/settings">Settings</router-link>
+    <CreatePage v-model:modelValue="dialogVisible" />
   </div>
 </template>
 
 <script setup lang="ts">
+import CreatePage from '@/pages/CreatePage.vue';
 import { ref } from 'vue';
 
-const links = ref([
-  { name: 'Dashboard', path: '/dashboard' },
-  { name: 'Create', path: '/create' },
-  { name: 'Rooms', path: '/room' },
-  { name: 'Settings', path: '/settings' }
-]);
+const dialogVisible = ref(false);
+
+const openCreateDialog = () => {
+  console.log('openCreateDialog');
+  dialogVisible.value = true;
+}
+
 </script>
 
 <style scoped>
