@@ -28,7 +28,7 @@ export const useUserStore = defineStore('userStore', {
         spinnerStore.setLoadingState(true)
         const usersList = await doAPIGet('auth/users')
         this.users = usersList
-        this.setUser(this.getLoggedUser)
+        // this.setUser(this.getLoggedUser)
         spinnerStore.setLoadingState(false)
       } 
       catch (error) {

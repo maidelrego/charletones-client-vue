@@ -19,7 +19,9 @@ export const useGameModeStore = defineStore('gameModeStore', {
       slug: ''
     } as GameModeState),
   getters: {
-   
+   getSelectedGameMode: (state) => {  
+      return state.selectedGameMode
+    }
   },
   actions: {
     async loadGameModes() {
