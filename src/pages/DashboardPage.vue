@@ -37,7 +37,6 @@ gameModeStore.$subscribe(() => {
 onBeforeMount(async () => {
   if (gameModeStore.modeList.length) return
   await gameModeStore.loadGameModes();
-  gameModeStore.setSelectedDefault();
 })
 </script>
 

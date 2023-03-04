@@ -1,6 +1,9 @@
 import type { GameMode } from '@/interfaces/GameMode'
 import { doAPIGet } from '@/services/api'
 import { defineStore } from 'pinia'
+import { useSpinnerStore } from '@/stores/spinner';
+
+const spinnerStore = useSpinnerStore();
 
 interface GameModeState {
   modeList: GameMode[],
@@ -21,9 +24,12 @@ export const useGameModeStore = defineStore('gameModeStore', {
   actions: {
     async loadGameModes() {
       try {
+        spinnerStore.setLoadingState(true)
         const gameModes = await doAPIGet('modes')
         console.log('GAME MODES', gameModes)
         this.modeList = gameModes
+        this.setSelectedDefault()
+        spinnerStore.setLoadingState(false)
       } 
       catch (error) {
         console.log('ERRRRORRRR', error)

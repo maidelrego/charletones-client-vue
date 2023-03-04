@@ -7,8 +7,8 @@
         </div>
       </template>
       <template #content>
-        <div class="scroll">
-          <Fieldset v-for="stat of props.statsData" :key="stat.seasonName"
+        <div>
+          <Fieldset class="mt-2" v-for="stat of props.statsData" :key="stat.seasonName"
             :legend="legendTitle(stat.seasonName, stat.remainingGames)" :toggleable="true"
             :collapsed="stat.remainingGames > 0 ? false : true">
             <ol>
@@ -32,10 +32,6 @@ import Card from 'primevue/card'
 const props = defineProps<{
   statsData: any
 }>()
-
-// const legendTitle = (seasonName: string, remainingGames: number) => {
-//   return `${seasonName} (${remainingGames} remaining games)`
-// }
 
 const legendTitle = (seasonName: string, remainingGames: number) => {
   if (remainingGames > 0) {

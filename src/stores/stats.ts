@@ -3,6 +3,9 @@ import { doAPIGet } from '@/services/api'
 import { defineStore } from 'pinia'
 import { useGameModeStore } from './gameMode'
 import { countPlayerShooterStats, seasonPartitions, sortByWins } from '@/utils/helpers'
+import { useSpinnerStore } from '@/stores/spinner';
+
+const spinnerStore = useSpinnerStore();
 
 const gameMode = useGameModeStore()
 
@@ -27,6 +30,7 @@ export const useStatsStore = defineStore('statsStore', {
   },
   actions: {
     async loadStats() {
+      spinnerStore.setLoadingState(true)
       if (!gameMode.selectedGameMode) return
       try {
         const stats = await doAPIGet('games/by-mode/' + gameMode.selectedGameMode)
@@ -67,6 +71,7 @@ export const useStatsStore = defineStore('statsStore', {
         this.playerStats = playerStats
         this.timeLine = timeLine
         this.seasonStats = seasonPartitionsData
+        spinnerStore.setLoadingState(false)
       } 
       catch (error) {
         console.log('ERRRRORRRR', error)

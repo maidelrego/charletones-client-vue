@@ -2,6 +2,9 @@ import type { User } from '@/interfaces/User'
 import { doAPIGet } from '@/services/api'
 import { defineStore } from 'pinia'
 import { useAuthStore } from './auth'
+import { useSpinnerStore } from '@/stores/spinner';
+
+  const spinnerStore = useSpinnerStore();
 
 interface UserState {
   users: User[]
@@ -22,9 +25,11 @@ export const useUserStore = defineStore('userStore', {
   actions: {
     async loadUsers() {
       try {
+        spinnerStore.setLoadingState(true)
         const usersList = await doAPIGet('auth/users')
         this.users = usersList
         this.setUser(this.getLoggedUser)
+        spinnerStore.setLoadingState(false)
       } 
       catch (error) {
         console.log('ERRRRORRRR', error)
