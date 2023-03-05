@@ -28,7 +28,6 @@ export const useGameModeStore = defineStore('gameModeStore', {
       try {
         spinnerStore.setLoadingState(true)
         const gameModes = await doAPIGet('modes')
-        console.log('GAME MODES', gameModes)
         this.modeList = gameModes
         this.setSelectedDefault()
         spinnerStore.setLoadingState(false)

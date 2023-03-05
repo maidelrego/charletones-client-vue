@@ -1,31 +1,5 @@
 import type { Stats, PlayerStat } from '@/interfaces/Stats'
-// import { ProcessEnv } from "env";
 import * as _ from 'lodash'
-// const partitionSize = ProcessEnv.REACT_APP_PARTITION_SIZE
-
-// export const getBiggerValue = (data: Stats[], propertyValue) => {
-//   const maxValueObject = data.reduce((prev, current) =>
-//     prev[propertyValue] > current[propertyValue] ? prev : current
-//   );
-
-//   return maxValueObject;
-// };
-
-// export const getMaxWinner = (data: PlayerStat[]) => {
-//   const maxWinObject = data.reduce((max, current) => {
-//     return current.totalWin > max.totalWin ? current : max
-//   })
-
-//   return maxWinObject
-// }
-
-// export const getMaxLoser = (data: PlayerStat[]) => {
-//   const maxLoserObject = data.reduce((max, current) => {
-//     return max.totalLose > current.totalLose ? max : current
-//   })
-
-//   return maxLoserObject
-// }
 
 export const sortByWins = (data: PlayerStat[]) => {
   return data.sort((a, b) => {

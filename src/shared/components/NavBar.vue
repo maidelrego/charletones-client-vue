@@ -15,7 +15,6 @@ import { ref } from 'vue';
 const dialogVisible = ref(false);
 
 const openCreateDialog = () => {
-  console.log('openCreateDialog');
   dialogVisible.value = true;
 }
 

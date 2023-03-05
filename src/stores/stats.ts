@@ -37,9 +37,6 @@ export const useStatsStore = defineStore('statsStore', {
         const timeLine = await doAPIGet('games/by-date/' + gameMode.selectedGameMode)
         const mostWinsInADay = await doAPIGet('games/user-most-wins') 
         const mostLosesInADay = await doAPIGet('games/user-most-loses')
-
-        console.log('STATS', stats)
-
         const playerStats = countPlayerShooterStats(stats, gameMode.slug)
         const seasonPartitionsData = seasonPartitions(stats, gameMode.slug)
 

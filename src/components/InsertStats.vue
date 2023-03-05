@@ -89,7 +89,6 @@ const updatePlayerForms = (winner: string, argoyas: string[]) => {
 const submitStats = async () => {
   spinnerStore.setLoadingState(true);
   for (const stat of playerForms.value) {
-    console.log(stat);
     await doAPIPost('games', stat)
   }
   spinnerStore.setLoadingState(false);

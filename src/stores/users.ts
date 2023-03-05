@@ -26,7 +26,6 @@ export const useUserStore = defineStore('userStore', {
   actions: {
     async loadUsers() {
       try {
-        console.log('LOADING USERS')
         spinnerStore.setLoadingState(true)
         const usersList = await doAPIGet('auth/users')
         this.users = usersList
