@@ -20,16 +20,7 @@
       </template>
       <template #content>
         <div class="mt-0 pt-0 pl-2">
-          <div class="mb-4">
-           
-            <!-- <ul class="mentionsList">
-              <li>
-                <span>Most Wins in a Day: </span>
-                <span>{{ playerStat.mostWinsInADay }}</span>
-              </li>
-            </ul> -->
-          </div>
-          <div class="grid  text-center">
+          <div class="grid mt-3 text-center">
             <div class="col">
               <Avatar size="large" style="background-color:#2196F3; color: #ffffff">
                 <span class="p-avatar-text p-avatar-text-icon-left">

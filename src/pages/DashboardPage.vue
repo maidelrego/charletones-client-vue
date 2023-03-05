@@ -17,6 +17,7 @@
 <script setup lang="ts">
 import { useStatsStore } from "@/stores/stats";
 import { useGameModeStore } from "@/stores/gameMode";
+import { useUserStore } from '@/stores/users';
 import { onBeforeMount, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import UserCard from "@/components/UserCard.vue";
@@ -25,6 +26,7 @@ import SeasonsFieldset from "@/components/SeasonsFieldset.vue";
 
 const statsStore = useStatsStore();
 const gameModeStore = useGameModeStore();
+const userStore = useUserStore();
 const timeLineData = computed(() => { return statsStore.timeLine });
 const seasonStats = computed(() => { return statsStore.seasonStats });
 const { playerStats } = storeToRefs(statsStore)
@@ -35,6 +37,8 @@ gameModeStore.$subscribe(() => {
 });
 
 onBeforeMount(async () => {
+  if (userStore.users.length !== 0) return
+  await userStore.loadUsers();
   if (gameModeStore.modeList.length) return
   await gameModeStore.loadGameModes();
 })

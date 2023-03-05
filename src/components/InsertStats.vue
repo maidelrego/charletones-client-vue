@@ -21,7 +21,7 @@
     </div>
     <div class="myDivider"></div>
     <div class="col-12 text-center">
-      <Button @click="submitStats()" label="Send" class="p-button w-3" color="red" />
+      <Button @click="submitStats()" label="Send" class="p-button w-3" />
     </div>
   </div>
 </template>
@@ -38,9 +38,6 @@ import { doAPIPost } from '@/services/api';
 import { useSpinnerStore } from '@/stores/spinner';
 import { useStatsStore } from '../stores/stats';
 
-const spinnerStore = useSpinnerStore();
-const statsStore = useStatsStore();
-
 interface Form {
   kills: number;
   deaths: number;
@@ -49,8 +46,11 @@ interface Form {
   mode_id: typeof getSelectedGameMode;
   user_id: string;
 }
-
+const spinnerStore = useSpinnerStore();
+const statsStore = useStatsStore();
 const userStore = useUserStore();
+
+
 const { getSelectedGameMode } = useGameModeStore();
 const { users } = storeToRefs(userStore)
 const playerForms = ref<Form[]>([]);
@@ -98,7 +98,6 @@ const submitStats = async () => {
 }
 
 onBeforeMount(async () => {
-  await userStore.loadUsers();
   users.value.map((user) => (
     playerForms.value.push({
       kills: 0,
@@ -119,33 +118,10 @@ onBeforeMount(async () => {
 ::v-deep(.p-button) {
   background-color: #2084f3;
 }
-
 ::v-deep(.p-button-label) {
   color: #fff;
   font-family: sophia, sans-serif;
   font-weight: 700;
   font-size: 1rem;
-}
-
-.myDivider {
-  border-top: 3px solid #2084f3;
-  margin: 1rem 0;
-  margin-top: 3rem;
-  border-radius: 30px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 85%;
-}
-
-.label {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #fff;
-  font-family: sophia, sans-serif;
-  margin-left: 0.5rem;
-}
-
-.winnersTableCard {
-  background-color: #2a2e35;
 }
 </style>

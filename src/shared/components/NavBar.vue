@@ -22,30 +22,4 @@ const openCreateDialog = () => {
 </script>
 
 <style scoped>
-.navBar {
-  overflow: hidden;
-  display: flex;
-}
-
-.links {
-  color: white;
-  text-decoration: none;
-  margin: 0 10px;
-  font-size: 1.25rem;
-  margin-top: 1.5rem;
-  font-weight: 700;
-  font-family: sophia-prop, sans-serif;
-}
-
-.links:hover {
-  color: #2196F3;
-  transition-property: transform;
-  transition-duration: 0.3s;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  scale: 1.1;
-  cursor: pointer;
-}
-
-.active {
-  color: #2196F3;
-}</style>
+</style>

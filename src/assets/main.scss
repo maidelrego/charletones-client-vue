@@ -1,0 +1,200 @@
+@import url('https://fonts.cdnfonts.com/css/cubano');
+
+body {
+  background-color: #1f2834;
+  height: 99vh;
+  margin: 20px;
+}
+
+h1 {
+  background-image: linear-gradient(to top, var(--tw-gradient-stops));
+  --tw-gradient-from: #f97316;
+  --tw-gradient-to: rgb(249 115 22 / 0);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  --tw-gradient-to: #eab308;
+  background-clip: text;
+  color: #0000;
+  -webkit-background-clip: text;
+  font-family: 'Cubano', sans-serif;
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+h3 {
+  background-image: linear-gradient(to top, var(--tw-gradient-stops));
+  --tw-gradient-from: #f97316;
+  --tw-gradient-to: rgb(249 115 22 / 0);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  --tw-gradient-to: #eab308;
+  background-clip: text;
+  color: #0000;
+  -webkit-background-clip: text;
+  font-family: 'Cubano', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #3f454f;
+}
+
+.myDivider {
+  border-top: 3px solid #2084f3;
+  margin: 1rem 0;
+  margin-top: 3rem;
+  border-radius: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 85%;
+}
+
+.label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  font-family: sophia, sans-serif;
+  margin-left: 0.5rem;
+}
+
+.statsCard {
+  background-color: #2a2e35;
+}
+
+li {
+  margin-bottom: .5rem;
+}
+
+.cardHeader {
+  background-color: #eab308;
+  text-align: center;
+}
+
+.spanText {
+  color: white;
+  font-family: sophia, sans-serif;
+  font-weight: 400;
+}
+
+.tableHeader {
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / .1), 0 8px 10px -6px rgb(0 0 0 / .1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-text-opacity: 1;
+  color: rgb(18 24 27 / var(--tw-text-opacity));
+  font-size: 1.5rem;
+  line-height: 1;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(234 179 8 / var(--tw-bg-opacity));
+  color: #1f2834;
+  display: inline-block;
+  font-family: 'Cubano', sans-serif;
+}
+
+div.scroll {
+  height: 438px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.navBar {
+  overflow: hidden;
+  display: flex;
+}
+
+.links {
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 1.25rem;
+  margin-top: 1.5rem;
+  font-weight: 700;
+  font-family: sophia-prop, sans-serif;
+}
+
+.links:hover {
+  color: #2196F3;
+  transition-property: transform;
+  transition-duration: 0.3s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  scale: 1.1;
+  cursor: pointer;
+}
+
+.active {
+  color: #2196F3;
+}
+
+.mainBar {
+  position: fixed;
+  top: 0px;
+  left: 0;
+  height: 100vh;
+  width: 5rem;
+  margin: 0;
+  flex-direction: column;
+  background-color: #1e1f22;
+  color: white;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.progress-spinner {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+/* Transparent Overlay */
+.progress-spinner:before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.53);
+}
+
+.mySelectStyles {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 700;
+  font-family: sophia-prop, sans-serif;
+}
+
+.logout {
+  color: white;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-top: 1rem;
+}
+
+.logout:hover {
+  color: #2196F3;
+  transition-property: transform;
+  transition-duration: 0.3s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  scale: 1.1;
+  cursor: pointer;
+}
+.myOptions {
+  font-size: 1.2rem;
+  font-weight: 700;
+  font-family: sophia-prop, sans-serif;
+}

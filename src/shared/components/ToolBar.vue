@@ -22,7 +22,9 @@
       </Dropdown>
     </div>
     <div class="col-12 md:col-4 lg:col-4 text-right pr-3 mt-2">
-      <Avatar :image="user[0] ? user[0].avatar : ''" shape="circle" size="large"/>
+      <span @click="logout">
+        <font-awesome-icon icon="right-from-bracket" class="logout" />
+      </span>
     </div>
   </div>
 </template>
@@ -30,30 +32,17 @@
 <script setup lang="ts">
 import Dropdown from 'primevue/dropdown';
 import NavBar from './NavBar.vue';
-import Avatar from 'primevue/avatar';
-import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import { useGameModeStore } from '@/stores/gameMode';
+import { useAuthStore } from '@/stores/auth';
 
-const authStore = useAuthStore()
-const { user } = storeToRefs(authStore)
 const gameMode = useGameModeStore()
+const authStore = useAuthStore()
+const { logout } = authStore
 const { selectedGameMode, modeList } = storeToRefs(gameMode)
 
 
 </script>
 
 <style scoped>
-.mySelectStyles {
-  color: white;
-  font-size: 1.2rem;
-  font-weight: 700;
-  font-family: sophia-prop, sans-serif;
-}
-
-.myOptions {
-  font-size: 1.2rem;
-  font-weight: 700;
-  font-family: sophia-prop, sans-serif;
-}
 </style>
