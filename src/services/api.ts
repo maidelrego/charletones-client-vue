@@ -1,7 +1,6 @@
 import axios from 'axios'
 const axiosInstance = axios.create()
-// const baseURL = process.env.NODE_ENV === "production" ? process.env.REACT_APP_PROD_URL : process.env.REACT_APP_DEV_URL;
-const baseURL = 'http://localhost:3000/'
+const baseURL = import.meta.env.VITE_ENVIROMENT === "production" ? import.meta.env.VITE_SERVER : import.meta.env.VITE_DEV_SERVER;
 const apiServer = baseURL + 'api/v1/'
 
 interface IOptions {
