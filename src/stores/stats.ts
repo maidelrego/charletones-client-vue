@@ -34,11 +34,17 @@ export const useStatsStore = defineStore('statsStore', {
       if (!gameMode.selectedGameMode) return
       try {
         const stats = await doAPIGet('games/by-mode/' + gameMode.selectedGameMode)
+        console.log('STATS', stats)
         const timeLine = await doAPIGet('games/by-date/' + gameMode.selectedGameMode)
-        const mostWinsInADay = await doAPIGet('games/user-most-wins') 
+        console.log('TIMELINE', timeLine)
+        const mostWinsInADay = await doAPIGet('games/user-most-wins')
+        console.log('mostWinsInADay', mostWinsInADay)
         const mostLosesInADay = await doAPIGet('games/user-most-loses')
+        console.log('mostLosesInADay', mostLosesInADay)
         const playerStats = countPlayerShooterStats(stats, gameMode.slug)
+        console.log('playerStats', playerStats)
         const seasonPartitionsData = seasonPartitions(stats, gameMode.slug)
+        console.log('seasonPartitionsData', seasonPartitionsData)
 
         if (gameMode.slug === 'dominoes') {
           sortByWins(playerStats)
