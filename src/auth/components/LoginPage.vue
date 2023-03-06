@@ -7,6 +7,7 @@
       </div>
 
       <div>
+        <Toast position="top-right" />
         <form @submit.prevent="login">
           <div class="mb-4">
               <InputText placeholder="Email" id="email1" type="text" v-model="email" class="w-full mb-2" />
@@ -31,11 +32,14 @@ import InputText from 'primevue/inputtext';
 import { onBeforeMount, computed } from 'vue';
 import { useAuthStore } from '@/stores/auth'
 import { useSpinnerStore } from '@/stores/spinner';
+import { useToast } from 'primevue/usetoast';
+import Toast from 'primevue/toast';
 
 import router from '@/router';
 import { ref } from 'vue';
 
-
+const toast = useToast();
+const authStore = useAuthStore();
 const spinnerStore = useSpinnerStore();
 const email = ref<string>('');
 const password = ref<string>('');
@@ -44,7 +48,6 @@ const loginNotValid = computed(() => {
 });
 
 onBeforeMount(async () => {
-  const authStore = useAuthStore();
   await authStore.loadFromLocalStorage();
 
   if (authStore.isLoggedIn) {
@@ -55,13 +58,16 @@ onBeforeMount(async () => {
 const login = async () => {
   if (loginNotValid.value) return
   spinnerStore.setLoadingState(true)
-  const authStore = useAuthStore();
-  await authStore.login(email.value, password.value);
-
-  if (authStore.isLoggedIn) {
-    router.push({ name: 'mainLayout' });
-  }
-  spinnerStore.setLoadingState(false)
+  authStore.login(email.value, password.value).then((res) => {
+    if (res.status === 201) {
+      authStore.setCredentials(res.data.token, res.data._id);
+      router.push({ name: 'mainLayout' });
+      spinnerStore.setLoadingState(false)
+    } else {
+      spinnerStore.setLoadingState(false)
+      toast.add({ severity: 'error', summary: 'Error', detail: res.message, life: 6000 });
+    }
+  })
 };
 
 const emailInvalid = computed(() => {

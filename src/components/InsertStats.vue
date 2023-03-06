@@ -21,7 +21,7 @@
     </div>
     <div class="myDivider"></div>
     <div class="col-12 text-center">
-      <Button @click="submitStats()" label="Send" class="p-button w-3" />
+      <Button @click="submitStats()" :disabled="formIsInvalid" label="Send" class="p-button w-3" />
     </div>
   </div>
 </template>
@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/users';
 import { useGameModeStore } from '@/stores/gameMode';
-import { ref, onBeforeMount, watchEffect } from 'vue';
+import { ref, onBeforeMount, watchEffect, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import RadioButton from 'primevue/radiobutton';
 import Checkbox from 'primevue/checkbox';
@@ -82,11 +82,15 @@ const updatePlayerForms = (winner: string, argoyas: string[]) => {
       player.argoya = true;
     }
   });
-
 }
+
+const formIsInvalid = computed(() => {
+  return !selectedWinner.value;
+})
 
 
 const submitStats = async () => {
+  if (formIsInvalid.value) return
   spinnerStore.setLoadingState(true);
   for (const stat of playerForms.value) {
     await doAPIPost('games', stat)

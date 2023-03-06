@@ -11,6 +11,7 @@ import '@/assets/main.scss'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import ToastService from 'primevue/toastservice';
+import Tooltip from 'primevue/tooltip';
 import { faDice, faHome, faGear, faPlus, faTrophy, faCircleNotch, faCircleDot, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
 const app = createApp(App)
@@ -27,5 +28,5 @@ pinia.use(({ store }) => {
 app.use(router)
 app.use(PrimeVue, {ripple: true})
 app.use(ToastService);
-
+app.directive('tooltip', Tooltip);
 app.mount('#app')
