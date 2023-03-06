@@ -18,7 +18,7 @@
             <span class="text-red-600" v-if="passwordInvalid">Password must be at least 8 characters, contain at least one uppercase letter, one lowercase letter, and one number.</span>
           </div>
 
-          <Button type="submit" label="Sign In" icon="pi pi-user" class="w-full"></Button>
+          <Button type="submit" :disabled="loginNotValid" label="Sign In" icon="pi pi-user" class="w-full"></Button>
         </form>
       </div>
     </div>
@@ -39,6 +39,9 @@ import { ref } from 'vue';
 const spinnerStore = useSpinnerStore();
 const email = ref<string>('');
 const password = ref<string>('');
+const loginNotValid = computed(() => {
+  return emailInvalid.value || passwordInvalid.value;
+});
 
 onBeforeMount(async () => {
   const authStore = useAuthStore();
@@ -50,8 +53,8 @@ onBeforeMount(async () => {
 });
 
 const login = async () => {
+  if (loginNotValid.value) return
   spinnerStore.setLoadingState(true)
-  if (emailInvalid.value && passwordInvalid) return
   const authStore = useAuthStore();
   await authStore.login(email.value, password.value);
 
