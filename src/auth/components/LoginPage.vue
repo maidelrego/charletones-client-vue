@@ -43,7 +43,7 @@ const authStore = useAuthStore();
 const spinnerStore = useSpinnerStore();
 
 const passwordValidation = (value: string) => {
-  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+  const regex = /(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
   return regex.test(value);
 };
 
