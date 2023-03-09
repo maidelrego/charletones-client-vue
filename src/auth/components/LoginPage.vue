@@ -10,16 +10,16 @@
         <Toast position="top-right" />
         <form @submit.prevent="login">
           <div class="mb-4">
-              <InputText placeholder="Email" id="email1" type="text" v-model="email" class="w-full mb-2" />
-              <span class="text-red-600" v-if="emailInvalid">Must be valid Email</span>
+            <InputText placeholder="Email" id="email1" type="text" v-model="form.email" class="w-full mb-2" />
+            <span class="text-red-600" v-if="v$.email.$error">{{ v$.email.$errors[0].$message }}</span>
           </div>
 
           <div class="mb-4">
-            <InputText placeholder="Password" type="password" v-model="password" class="w-full mb-2" />
-            <span class="text-red-600" v-if="passwordInvalid">Password must be at least 8 characters, contain at least one uppercase letter, one lowercase letter, and one number.</span>
+            <InputText placeholder="Password" type="password" v-model="form.password" class="w-full mb-2" />
+            <span class="text-red-600" v-if="v$.password.$error">{{ v$.password.$errors[0].$message }}</span>
           </div>
 
-          <Button type="submit" :disabled="loginNotValid" label="Sign In" icon="pi pi-user" class="w-full"></Button>
+          <Button type="submit" label="Sign In" icon="pi pi-user" class="w-full"></Button>
         </form>
       </div>
     </div>
@@ -27,25 +27,43 @@
 </template>
 
 <script setup lang="ts">
+import router from '@/router';
+import { onBeforeMount, computed, reactive } from 'vue';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
-import { onBeforeMount, computed } from 'vue';
+import Toast from 'primevue/toast';
 import { useAuthStore } from '@/stores/auth'
 import { useSpinnerStore } from '@/stores/spinner';
 import { useToast } from 'primevue/usetoast';
-import Toast from 'primevue/toast';
-
-import router from '@/router';
-import { ref } from 'vue';
+import { useVuelidate } from '@vuelidate/core'
+import { required, email, helpers } from '@vuelidate/validators'
 
 const toast = useToast();
 const authStore = useAuthStore();
 const spinnerStore = useSpinnerStore();
-const email = ref<string>('');
-const password = ref<string>('');
-const loginNotValid = computed(() => {
-  return emailInvalid.value || passwordInvalid.value;
-});
+
+const passwordValidation = (value: string) => {
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+  return regex.test(value);
+};
+
+const form = reactive({
+  email: '',
+  password: ''
+})
+
+const rules = computed(() => ({
+  email: {
+    required,
+    email
+  },
+  password: {
+    required,
+    passwordValidation: helpers.withMessage('Password must be at least 8 characters, contain at least one uppercase letter, one lowercase letter, and one number.', passwordValidation)
+  }
+}))
+
+const v$ = useVuelidate(rules, form)
 
 onBeforeMount(async () => {
   await authStore.loadFromLocalStorage();
@@ -56,9 +74,10 @@ onBeforeMount(async () => {
 });
 
 const login = async () => {
-  if (loginNotValid.value) return
+  v$.value.$validate()
+  if (v$.value.$invalid) return;
   spinnerStore.setLoadingState(true)
-  authStore.login(email.value, password.value).then((res) => {
+  authStore.login(form).then((res) => {
     if (res.status === 201) {
       authStore.setCredentials(res.data.token, res.data._id);
       router.push({ name: 'mainLayout' });
@@ -70,14 +89,6 @@ const login = async () => {
   })
 };
 
-const emailInvalid = computed(() => {
-  return /^[^@]+@\w+(\.\w+)+\w$/.test(email.value) && email.value.length > 0 ? false : true;
-});
-
-const passwordInvalid = computed(() => {
-  return /(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/.test(password.value) ? false : true;
-});
-
 </script>
 
 <style scoped>
@@ -87,15 +98,18 @@ const passwordInvalid = computed(() => {
   align-items: center;
   height: 98.3vh;
 }
+
 ::v-deep(.p-button) {
   background-color: #2084f3;
 }
+
 ::v-deep(.p-button-label) {
   color: #fff;
   font-family: sophia, sans-serif;
   font-weight: 700;
   font-size: 1rem;
 }
+
 ::v-deep(.p-inputtext) {
   background-color: transparent;
   font-size: 1rem;

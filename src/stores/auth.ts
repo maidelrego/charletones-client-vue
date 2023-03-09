@@ -43,9 +43,9 @@ export const useAuthStore = defineStore('authStore', {
         }
       }
     },
-    async login(email: string, password: string) {
+    async login(form: { email: string; password: string }) {
       try {
-        const login = await doAPIPost('auth/login', { email, password })
+        const login = await doAPIPost('auth/login', form)
         return login
       } catch (error) {
         console.log('ERROR', error)
