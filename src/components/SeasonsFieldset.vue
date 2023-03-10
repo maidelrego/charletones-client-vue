@@ -11,12 +11,18 @@
           <Fieldset class="mt-2" v-for="stat of props.statsData" :key="stat.seasonName"
             :legend="legendTitle(stat.seasonName, stat.remainingGames)" :toggleable="true"
             :collapsed="stat.remainingGames > 0 ? false : true">
-            <ol>
-              <li v-for="season of stat.seasonStats" :key="season._id">
-                <span class="spanText">{{ season.user.fullName }}</span>
-                <span class="spanText">( {{ season.totalWin }} - {{ season.totalLose }} )</span>
-              </li>
-            </ol>
+            <table id="seasonsStats">
+              <tr>
+                <th>Name</th>
+                <th>Wins</th>
+                <th>Losses</th>
+              </tr>
+              <tr v-for="(season, index) in stat.seasonStats" :key="season._id">
+                <td class="tagName"><span class="mr-2">{{ index + 1 }}.</span>{{ season.user.fullName }}</td>
+                <td><span class="tag">{{ season.totalWin }}</span></td>
+                <td><span class="tag">{{ season.totalLose }}</span></td>
+              </tr>
+            </table>
           </Fieldset>
         </div>
       </template>
@@ -35,7 +41,7 @@ const props = defineProps<{
 
 const legendTitle = (seasonName: string, remainingGames: number) => {
   if (remainingGames > 0) {
-    return `${seasonName} (${remainingGames} remaining games)`
+    return `${seasonName}  ( ${remainingGames} remaining games )`
   } else {
     return `${seasonName}`
   }
@@ -43,14 +49,51 @@ const legendTitle = (seasonName: string, remainingGames: number) => {
 </script>
 
 <style lang="scss" scoped>
+
 ::v-deep(.p-fieldset) {
   background-color: #2a2e35;
 }
+
 ::v-deep(.p-fieldset-legend) {
   background-color: #2a2e35;
 }
+
 ::v-deep(.p-fieldset-content) {
   background-color: #2a2e35;
   padding: 0;
+}
+
+#seasonsStats {
+  font-family: sophia, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#seasonsStats td, #seasonsStats th {
+  padding: 8px;
+  text-align: start;
+}
+
+#seasonsStats th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: start;
+  color: white;
+  font-size: 1.1rem;
+}
+
+.tag {
+  background-color: #2084f3;
+  color: white;
+  font-size: .9rem;
+  border-radius: 2rem;
+  padding: 0.2rem 0.5rem;
+}
+
+.tagName {
+  color: white;
+  font-size: .9rem;
+  font-family: 'Cubano';
+  font-weight: 100;
 }
 </style>
