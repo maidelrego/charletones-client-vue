@@ -13,6 +13,7 @@ interface StatsState {
   stats: Stats[]
   playerStats: PlayerStat[]
   seasonStats: SeasonStats[]
+  teams: []
   timeLine: any
 }
 
@@ -22,6 +23,7 @@ export const useStatsStore = defineStore('statsStore', {
       stats: [],
       playerStats: [],
       seasonStats: [],
+      teams: [],
       timeLine: []
     } as StatsState),
   getters: {
@@ -33,6 +35,7 @@ export const useStatsStore = defineStore('statsStore', {
       if (!gameMode.selectedGameMode) return
       try {
         const stats = await doAPIGet('games/by-mode/' + gameMode.selectedGameMode)
+        this.teams = await doAPIGet('teams')
         const timeLine = await doAPIGet('games/by-date/' + gameMode.selectedGameMode)
         const mostWinsInADay = await doAPIGet('games/user-most-wins')
         const mostLosesInADay = await doAPIGet('games/user-most-loses')

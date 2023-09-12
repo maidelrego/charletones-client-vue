@@ -1,12 +1,13 @@
 <template>
   <Dialog :content-style="[{ backgroundColor: '#2a2e35' }]" :breakpoints="{ '960px': '75vw', '640px': '100vw' }"
-    :style="{ width: '50vw' }" v-model:visible="value">
+    :style="{ width: '70vw' }" v-model:visible="value">
     <template #header>
       <div class="cardHeader">
         <span class="tableHeader">Insert Stats</span>
       </div>
     </template>
-    <InsertStats @close-dialog="closeDialog" />
+    <InsertStats v-if="slug === 'dominoes'" @close-dialog="closeDialog" />
+    <InserStatsCod v-else @close-dialog="closeDialog" />
   </Dialog>
 </template>
 
@@ -14,9 +15,12 @@
 import InsertStats from '@/components/InsertStats.vue';
 import Dialog from 'primevue/dialog';
 import { computed } from 'vue';
+import { useGameModeStore } from '@/stores/gameMode';
+import InserStatsCod from '@/components/InsertStatsCod.vue';
 
 const props = defineProps(['modelValue'])
 const emit = defineEmits(['update:modelValue'])
+const { slug } = useGameModeStore();
 
 const value = computed({
   get() {
