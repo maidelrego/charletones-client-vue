@@ -54,6 +54,7 @@ export const useAuthStore = defineStore('authStore', {
     async logout() {
       this.loggedIn = false
       this.token = ''
+      this._id = ''
       localStorage.removeItem('charletonesUser')
       router.push({ name: 'login' })
     }

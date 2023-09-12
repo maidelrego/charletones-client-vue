@@ -28,6 +28,11 @@
         <TeamCard :teamObj="team" />
       </div>
     </div>
+    <div class="grid">
+      <div class="col-12 md:col-12 lg:col-6">
+        <CodTimeline v-if="codTimelineData.length > 0" :stats-data="codTimelineData" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -42,22 +47,36 @@ import TimeLine from '@/components/TimelineComp.vue'
 import SeasonsFieldset from '@/components/SeasonsFieldset.vue'
 import TeamCard from '@/components/TeamCard.vue'
 import { useTeamStore } from '@/stores/teams'
+import { useCodStatsStore } from '../stores/codStats';
+import CodTimeline from '@/components/CodTimeline.vue'
 
+const codStats = useCodStatsStore()
 const statsStore = useStatsStore()
 const gameModeStore = useGameModeStore()
 const userStore = useUserStore()
 const teamStore = useTeamStore()
+
 const timeLineData = computed(() => {
   return statsStore.timeLine
 })
+
+const codTimelineData = computed(() => {
+  return codStats.timeLine
+})
+
 const seasonStats = computed(() => {
   return statsStore.seasonStats
 })
-const { playerStats, teams } = storeToRefs(statsStore)
+const { playerStats } = storeToRefs(statsStore)
 const { slug } = storeToRefs(gameModeStore)
+const { teams } = storeToRefs(teamStore)
 
 gameModeStore.$subscribe(() => {
-  statsStore.loadStats()
+  if (gameModeStore.slug === 'dominoes') {
+    statsStore.loadStats()
+  } else {
+    codStats.loadCodStats()
+  }
 })
 
 onBeforeMount(async () => {

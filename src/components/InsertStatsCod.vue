@@ -20,7 +20,7 @@
     <div class="flex align-items-center justify-content-center">
       <Dropdown
         v-model="selectedMode"
-        :options="cities"
+        :options="codModes"
         optionLabel="name"
         optionValue="code"
         placeholder="Select a City"
@@ -74,16 +74,11 @@ import Button from 'primevue/button'
 import { doAPIPost } from '@/services/api'
 import { useSpinnerStore } from '@/stores/spinner'
 import { useTeamStore } from '../stores/teams'
+import { useCodStatsStore } from '../stores/codStats';
 import InputText from 'primevue/inputtext'
 import Card from 'primevue/card'
 import Dropdown from 'primevue/dropdown'
-
-interface Participant {
-  kills: number | null
-  deaths: number | null
-  user: string,
-  userName: string
-}
+import type { Participant } from '@/interfaces/Cod'
 
 interface Form {
   win: string
@@ -93,6 +88,7 @@ interface Form {
 const spinnerStore = useSpinnerStore()
 const userStore = useUserStore()
 const teamStore = useTeamStore()
+const codStats = useCodStatsStore()
 const { users } = storeToRefs(userStore)
 const { teams } = storeToRefs(teamStore)
 const statsForms = ref<Form>({
@@ -103,12 +99,14 @@ const playerForms = ref<Participant[]>([])
 const selectedWinner = ref<string>()
 const selectedMode = ref()
 const emit = defineEmits(['closeDialog'])
-const cities = ref([
-  { name: 'New York', code: 1 },
-  { name: 'Rome', code: 2 },
-  { name: 'London', code: 3 },
-  { name: 'Istanbul', code: 4 },
-  { name: 'Paris', code: 5 }
+const codModes = ref([
+  { name: 'Team Deathmatch', code: 1 },
+  { name: 'Search & Destroy', code: 2 },
+  { name: 'Domination', code: 3 },
+  { name: 'Hardpoint', code: 4 },
+  { name: 'Capture the Flag', code: 5 },
+  { name: 'Kill Confirmed', code: 6 },
+  { name: 'Control', code: 7 }
 ])
 
 const isFormInvalid = computed(() => {
@@ -137,10 +135,10 @@ watchEffect(() => {
 
 const submitStats = async () => {
   statsForms.value.participants = playerForms.value
-  console.log('statsForms', statsForms.value)
   if (isFormInvalid.value) return
   spinnerStore.setLoadingState(true)
   await doAPIPost('cod-games', statsForms.value)
+  codStats.loadCodStats()
   spinnerStore.setLoadingState(false)
   emit('closeDialog')
 }

@@ -21,15 +21,9 @@
                   <font-awesome-icon icon="trophy" class="icon" />
                 </span>
               </Avatar>
-              <span class="numbers">{{ teamObj.wins || 0 }}</span>
-            </div>
-            <div class="col">
-              <Avatar size="xlarge" style="background-color: #2196f3; color: #ffffff">
-                <span class="p-avatar-text p-avatar-text-icon-left">
-                  <font-awesome-icon icon="circle-notch" class="icon" />
-                </span>
-              </Avatar>
-              <span class="numbers">{{ teamObj.loses || 0 }}</span>
+              <span class="numbers">{{
+                teamStats.filter((t) => t.win === teamObj._id).length
+              }}</span>
             </div>
           </div>
         </div>
@@ -45,30 +39,92 @@
           >
             <div class="shadow-2 memberCard border-round p-4 flex-1 text-center mb-6 md:mb-0 mt-5">
               <div class="mb-4">
-                <Avatar class="-mt-8" :image="member.avatar" shape="circle" style="height: 60px; width: 60px" />
-                <span class="block text-900 mb-1 mt-1 text-xl font-bold">{{ member.fullName }}</span>
+                <Avatar
+                  class="-mt-8"
+                  :image="member.avatar"
+                  shape="circle"
+                  style="height: 60px; width: 60px"
+                />
+                <span
+                  class="block text-900 mb-1 mt-1 text-xl font-bold flex justify-content-center align-items-center"
+                  >{{ member.fullName
+                  }}<Badge
+                    v-if="member.roles.includes('capi')"
+                    class="ml-2"
+                    value="C"
+                    severity="success"
+                  ></Badge
+                ></span>
               </div>
-              <div class="flex justify-content-between align-items-center">
-                <span class="text-600">Kills</span
-                ><span class="text-900 font-medium">50%</span>
-              </div>
-              <div class="surface-300 mt-2 mb-3 border-round" style="height: 7px">
-                <div class="bg-blue-500 h-full border-round w-6"></div>
-              </div>
-              <div class="flex justify-content-between align-items-center">
-                <span class="text-600">Deaths</span
-                ><span class="text-900 font-medium">50%</span>
-              </div>
-              <div class="surface-300 mt-2 mb-3 border-round" style="height: 7px">
-                <div class="bg-blue-500 h-full border-round w-6"></div>
-              </div>
-              <div class="flex justify-content-between align-items-center">
-                <span class="text-600">KD</span
-                ><span class="text-900 font-medium">50%</span>
-              </div>
-              <div class="surface-300 mt-2 mb-3 border-round" style="height: 7px">
-                <div class="bg-blue-500 h-full border-round w-6"></div>
-              </div>
+              <ul class="list-none p-0 m-0">
+                <li class="mb-5">
+                  <div class="flex justify-content-between align-items-center">
+                    <span class="text-900 inline-flex justify-content-between align-items-center"
+                      ><span class="font-medium text-900">Kills</span></span
+                    ><span class="text-primary font-medium"
+                      >{{ individualStats.filter((i) => i.user === member._id)[0]?.totalKills || 0 }} /
+                      2000</span
+                    >
+                  </div>
+                  <div class="surface-300 w-full mt-2" style="height: 7px; border-radius: 4px">
+                    <div
+                      class="bg-primary h-full"
+                      :style="{
+                        width:
+                          updateProgressBar(
+                            individualStats.filter((i) => i.user === member._id)[0]
+                          ).killsProgress.toFixed(0) + '%'
+                      }"
+                      style="border-radius: 4px"
+                    ></div>
+                  </div>
+                </li>
+                <li class="mb-5">
+                  <div class="flex justify-content-between align-items-center">
+                    <span class="text-900 inline-flex justify-content-between align-items-center"
+                      ><span class="font-medium text-900">Deaths</span></span
+                    ><span class="text-red-500 font-medium"
+                      >{{ individualStats.filter((i) => i.user === member._id)[0]?.totalDeaths || 0 }} /
+                      2000</span
+                    >
+                  </div>
+                  <div class="surface-300 w-full mt-2" style="height: 7px; border-radius: 4px">
+                    <div
+                      class="bg-red-500 h-full"
+                      :style="{
+                        width:
+                          updateProgressBar(
+                            individualStats.filter((i) => i.user === member._id)[0]
+                          ).deathsProgress.toFixed(0) + '%'
+                      }"
+                      style="border-radius: 4px"
+                    ></div>
+                  </div>
+                </li>
+                <li>
+                  <div class="flex justify-content-between align-items-center">
+                    <span class="text-900 inline-flex justify-content-between align-items-center"
+                      ><span class="font-medium text-900">KD Ratio</span></span
+                    ><span class="text-orange-500 font-medium">{{
+                      individualStats.filter((i) => i.user === member._id)[0]?.kdRatio.toFixed(2) ||
+                      0
+                    }}</span>
+                  </div>
+                  <div class="surface-300 w-full mt-2" style="height: 7px; border-radius: 4px">
+                    <div
+                      :class="
+                        getKdColor(
+                          individualStats
+                            .filter((i) => i.user === member._id)[0]
+                            ?.kdRatio.toFixed(2)
+                        )
+                      "
+                      class="h-full"
+                      style="width: 45%; border-radius: 4px"
+                    ></div>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -80,18 +136,20 @@
 <script setup lang="ts">
 import Card from 'primevue/card'
 import Avatar from 'primevue/avatar'
-import { toRefs } from 'vue'
+import Badge from 'primevue/badge'
+import { toRefs, computed } from 'vue'
+import { useCodStatsStore } from '../stores/codStats'
+import type { IndividualStats } from '@/interfaces/Cod'
 
 interface TeamObj {
   _id: string
   name: string
   avatar: string
-  wins: number
-  loses: number
   members: {
     _id: string
     fullName: string
     avatar: string
+    roles: string[]
   }[]
 }
 
@@ -101,7 +159,40 @@ const props = defineProps<{
 
 const { teamObj } = toRefs(props)
 
-console.log('team', teamObj.value)
+const codStats = useCodStatsStore()
+
+const teamStats = computed(() => {
+  return codStats.stats
+})
+
+const individualStats = computed(() => {
+  return codStats.individualStats
+})
+
+const updateProgressBar = (player: IndividualStats) => {
+  let killsProgress = 0
+  let deathsProgress = 0
+  if (player) {
+    killsProgress = (player.totalKills / 2000) * 100
+    deathsProgress = (player.totalDeaths / 2000) * 100
+
+    killsProgress = Math.min(killsProgress, 100)
+    deathsProgress = Math.min(deathsProgress, 100)
+  }
+
+  return { killsProgress, deathsProgress }
+}
+
+const getKdColor = (kd: string) => {
+  let kdNumber = Number(kd)
+  if (kdNumber < 1) {
+    return 'bg-red-500'
+  } else if (kdNumber >= 1 && kdNumber < 1.5) {
+    return 'bg-yellow-500'
+  } else if (kdNumber >= 1.5) {
+    return 'bg-green-500'
+  }
+}
 </script>
 
 <style lang="scss" scoped>

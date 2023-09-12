@@ -17,10 +17,12 @@ import Dialog from 'primevue/dialog';
 import { computed } from 'vue';
 import { useGameModeStore } from '@/stores/gameMode';
 import InserStatsCod from '@/components/InsertStatsCod.vue';
+import { storeToRefs } from 'pinia';
 
 const props = defineProps(['modelValue'])
 const emit = defineEmits(['update:modelValue'])
-const { slug } = useGameModeStore();
+const gameMode = useGameModeStore()
+const { slug } = storeToRefs(gameMode)
 
 const value = computed({
   get() {
