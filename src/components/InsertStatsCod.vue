@@ -31,7 +31,11 @@
       <h3>Player Stats</h3>
     </div>
     <div class="grid">
-      <div v-for="(form, index) in playerForms" :key="index" class="col-12 sm:col-12 md:col-6 lg:col-4">
+      <div
+        v-for="(form, index) in playerForms"
+        :key="index"
+        class="col-12 sm:col-12 md:col-6 lg:col-4"
+      >
         <Card>
           <template #header>
             <div class="cardHeader">
@@ -39,18 +43,28 @@
             </div>
           </template>
           <template #content>
-            <div class="flex flex-column align-items-center justify-content-center">
-              <div class="field grid">
-                <label for="kills" class="col-fixed" style="width: 60px">Kills</label>
-                <div class="col">
-                  <InputText type="number" id="kills" v-model="form.kills" />
-                </div>
+            <div class="field grid">
+              <label for="firstname3" class="col-fixed" style="width: 100px">Kills</label>
+              <div class="col">
+                <input
+                  :value="form.kills"
+                  @change="updateForm(form, $event, 'kills')"
+                  id="firstname3"
+                  type="number"
+                  class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+                />
               </div>
-              <div class="field grid">
-                <label for="deaths" class="col-fixed" style="width: 60px">Deaths</label>
-                <div class="col">
-                  <InputText type="number" id="deaths" v-model="form.deaths" />
-                </div>
+            </div>
+            <div class="field grid">
+              <label for="lastname3" class="col-fixed" style="width: 100px">Deaths</label>
+              <div class="col">
+                <input
+                  :value="form.deaths"
+                  @change="updateForm(form, $event, 'deaths')"
+                  id="lastname3"
+                  type="number"
+                  class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary"
+                />
               </div>
             </div>
           </template>
@@ -74,8 +88,7 @@ import Button from 'primevue/button'
 import { doAPIPost } from '@/services/api'
 import { useSpinnerStore } from '@/stores/spinner'
 import { useTeamStore } from '../stores/teams'
-import { useCodStatsStore } from '../stores/codStats';
-import InputText from 'primevue/inputtext'
+import { useCodStatsStore } from '../stores/codStats'
 import Card from 'primevue/card'
 import Dropdown from 'primevue/dropdown'
 import type { Participant } from '@/interfaces/Cod'
@@ -94,7 +107,8 @@ const { teams } = storeToRefs(teamStore)
 const statsForms = ref<Form>({
   win: '',
   mode: 0,
-  participants: []})
+  participants: []
+})
 const playerForms = ref<Participant[]>([])
 const selectedWinner = ref<string>()
 const selectedMode = ref()
@@ -114,10 +128,12 @@ const isFormInvalid = computed(() => {
     !selectedWinner.value ||
     !selectedMode.value ||
     playerForms.value.some((form) => {
-      return form.kills === null || form.deaths === null || form.kills === null || form.deaths === null;
+      return (
+        form.kills === null || form.deaths === null || form.kills === null || form.deaths === null
+      )
     })
-  );
-});
+  )
+})
 
 watchEffect(() => {
   if (selectedWinner.value) {
@@ -131,7 +147,13 @@ watchEffect(() => {
       statsForms.value.mode = selectedMode.value
     }
   }
-});
+})
+
+const updateForm = (form: Participant, event: Event, field: string) => {
+  const target = event.target as HTMLInputElement
+  if (field === 'kills') form.kills = parseInt(target.value)
+  if (field === 'deaths') form.deaths = parseInt(target.value)
+}
 
 const submitStats = async () => {
   statsForms.value.participants = playerForms.value

@@ -5,8 +5,13 @@ export interface Participant {
   userName: string
 }
 
+interface Team {
+  _id: string
+  name: string
+}
+
 export interface CodStats {
-  win: string,
+  win: Team,
   mode: number
   participants: Participant[]
 }

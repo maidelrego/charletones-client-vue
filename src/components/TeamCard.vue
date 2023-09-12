@@ -22,7 +22,7 @@
                 </span>
               </Avatar>
               <span class="numbers">{{
-                teamStats.filter((t) => t.win === teamObj._id).length
+                teamStats.filter((t) => t.win._id === teamObj._id).length
               }}</span>
             </div>
           </div>
