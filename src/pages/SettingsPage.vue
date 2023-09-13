@@ -66,7 +66,7 @@ import InputText from 'primevue/inputtext'
 import Avatar from 'primevue/avatar'
 import FileUpload from 'primevue/fileupload'
 import { useToast } from 'primevue/usetoast'
-import { doAPIPost } from '@/services/api'
+import { doAPIPost, doAPIPut } from '@/services/api'
 import { useTeamStore } from '@/stores/teams'
 
 const toast = useToast()
@@ -110,7 +110,7 @@ const updateTeamProfile = async () => {
     toast.add({ severity: 'error', summary: 'Error', detail: 'Error uploading', life: 3000 })
     return
   }
-  const updatedTeam = await doAPIPost(`teams/${myTeam.value._id}`, { name: teamName.value })
+  const updatedTeam = await doAPIPut(`teams/${myTeam.value._id}`, { name: teamName.value })
   teamStore.initMyTeam(updatedTeam.data)
 }
 
@@ -130,7 +130,7 @@ const uploadTeamAvatar = async (e: any) => {
     toast.add({ severity: 'error', summary: 'Error', detail: 'Error uploading', life: 3000 })
     return
   }
-  const updatedTeam = await doAPIPost(`teams/${myTeam.value._id}`, newForm)
+  const updatedTeam = await doAPIPut(`teams/${myTeam.value._id}`, newForm)
   teamStore.initMyTeam(updatedTeam.data)
 }
 </script>
