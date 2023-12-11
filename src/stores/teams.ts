@@ -2,9 +2,11 @@ import { doAPIGet } from '@/services/api'
 import { defineStore } from 'pinia'
 import { useSpinnerStore } from '@/stores/spinner';
 import { useAuthStore } from '@/stores/auth';
+import { useGameModeStore } from './gameMode';
 
 const spinnerStore = useSpinnerStore();
 const userStore = useAuthStore()
+const gameModeStore = useGameModeStore()
 
 interface Team {
   _id: string
@@ -35,7 +37,8 @@ export const useTeamStore = defineStore('teamStore', {
     async loadTeams() {
       try {
         spinnerStore.setLoadingState(true)
-        const teams = await doAPIGet('teams')
+        const modeId = gameModeStore.selectedGameMode
+        const teams = await doAPIGet(`teams/${modeId}`)
         this.teams = teams
         const myTeam = this.teams.find(team => team.members.find(member => member._id === userStore._id))
         this.myTeam = myTeam || null

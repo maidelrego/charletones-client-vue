@@ -7,7 +7,8 @@
       </div>
     </template>
     <InsertStats v-if="slug === 'dominoes'" @close-dialog="closeDialog" />
-    <InserStatsCod v-else @close-dialog="closeDialog" />
+    <InserStatsCod v-if="slug === 'cod'" @close-dialog="closeDialog" />
+    <InsertRocketLeagueStats v-if="slug === 'rocket_league'" @close-dialog="closeDialog" />
   </Dialog>
 </template>
 
@@ -18,6 +19,7 @@ import { computed } from 'vue';
 import { useGameModeStore } from '@/stores/gameMode';
 import InserStatsCod from '@/components/InsertStatsCod.vue';
 import { storeToRefs } from 'pinia';
+import InsertRocketLeagueStats from '@/components/InsertRocketLeagueStats.vue';
 
 const props = defineProps(['modelValue'])
 const emit = defineEmits(['update:modelValue'])

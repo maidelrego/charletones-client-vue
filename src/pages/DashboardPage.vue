@@ -18,7 +18,7 @@
       </div>
     </div>
   </div>
-  <div v-if="slug === 'cod'">
+  <div v-if="slug === 'cod' || slug === 'rocket_league'">
     <div class="grid">
       <div
         v-for="(team, index) in teams"
@@ -28,9 +28,14 @@
         <TeamCard :teamObj="team" />
       </div>
     </div>
-    <div class="grid">
+    <div class="grid" v-if="slug === 'cod'">
       <div class="col-12 md:col-12 lg:col-6">
         <CodTimeline v-if="codTimelineData.length > 0" :stats-data="codTimelineData" />
+      </div>
+    </div>
+    <div class="grid" v-if="slug === 'rocket_league'">
+      <div class="col-12 md:col-12 lg:col-12">
+        <RocketLeagueTimeline v-if="rocketLeagueStatsData.length > 0" :stats-data="rocketLeagueStatsData" />
       </div>
     </div>
   </div>
@@ -49,12 +54,15 @@ import TeamCard from '@/components/TeamCard.vue'
 import { useTeamStore } from '@/stores/teams'
 import { useCodStatsStore } from '../stores/codStats';
 import CodTimeline from '@/components/CodTimeline.vue'
+import { useRocketLeagueStatsStore } from '../stores/rocketLeagueStats';
+import RocketLeagueTimeline from '@/components/RocketLeagueTimeline.vue'
 
 const codStats = useCodStatsStore()
 const statsStore = useStatsStore()
 const gameModeStore = useGameModeStore()
 const userStore = useUserStore()
 const teamStore = useTeamStore()
+const rocketLeagueStats = useRocketLeagueStatsStore()
 
 const timeLineData = computed(() => {
   return statsStore.timeLine
@@ -62,6 +70,10 @@ const timeLineData = computed(() => {
 
 const codTimelineData = computed(() => {
   return codStats.timeLine
+})
+
+const rocketLeagueStatsData = computed(() => {
+  return rocketLeagueStats.stats
 })
 
 const seasonStats = computed(() => {
@@ -72,15 +84,22 @@ const { slug } = storeToRefs(gameModeStore)
 const { teams } = storeToRefs(teamStore)
 
 gameModeStore.$subscribe(() => {
-  if (gameModeStore.slug === 'dominoes') {
-    statsStore.loadStats()
-  } else {
-    codStats.loadCodStats()
+  switch (gameModeStore.slug) {
+    case 'dominoes':
+      statsStore.loadStats()
+      break
+    case 'cod':
+      teamStore.loadTeams()
+      codStats.loadCodStats()
+      break
+    case 'rocket_league':
+      teamStore.loadTeams()
+      rocketLeagueStats.loadRocketLeagueStats()
+
   }
 })
 
 onBeforeMount(async () => {
-  await teamStore.loadTeams()
   if (userStore.users.length !== 0) return
   await userStore.loadUsers()
   if (gameModeStore.modeList.length) return
